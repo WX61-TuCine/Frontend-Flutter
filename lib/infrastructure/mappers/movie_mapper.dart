@@ -1,8 +1,8 @@
-import 'package:tu_cine/domain/entities/film.dart';
+import 'package:tu_cine/domain/entities/movie.dart';
 import 'package:tu_cine/infrastructure/models/moviedb/movie_moviedb.dart';
 
 class MovieMapper {
-  static Film movieDBToEntity (MovieMovieDB moviedb) => Film(
+  static Movie movieDBToEntity (MovieMovieDB moviedb) => Movie(
     id: moviedb.id,
     title: moviedb.title,
     synopsis: moviedb.overview,

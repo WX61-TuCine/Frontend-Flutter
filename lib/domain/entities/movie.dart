@@ -1,4 +1,4 @@
-class Film{
+class Movie{
   final int id;
   final String title;
   //final int year;
@@ -9,7 +9,7 @@ class Film{
   //final String trailerSrc;
   //final int duration;
 
-  Film({
+  Movie({
     required this.id,
     required this.title,
     //required this.year,
