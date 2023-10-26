@@ -1,19 +1,23 @@
 class Film{
   final int id;
   final String title;
-  final int year;
+  //final int year;
+  final DateTime releaseDate;
   final String synopsis;
   final String posterSrc;
-  final String trailerSrc;
-  final int duration;
+  final List<String> genreIds;
+  //final String trailerSrc;
+  //final int duration;
 
   Film({
     required this.id,
     required this.title,
-    required this.year,
+    //required this.year,
+    required this.releaseDate,
     required this.synopsis,
     required this.posterSrc,
-    required this.trailerSrc,
-    required this.duration
+    required this.genreIds,
+    //required this.trailerSrc,
+    //required this.duration
   });
 }
