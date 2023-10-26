@@ -18,6 +18,56 @@ class CineclubHorizontalListview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return SizedBox(
+        height: 100,
+        child: Column(
+          children: [
+            if (title != null || subtitle != null)
+              _Title(title: title, subtitle: subtitle),
+          ],
+        ));
+  }
+}
+
+class _Title extends StatelessWidget {
+  final String? title;
+  final String? subtitle;
+
+  const _Title({
+    this.title,
+    this.subtitle,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+
+    const titleStyle = TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: Colors.black87,
+    );
+
+    return Container(
+      padding: const EdgeInsets.only(top:10), //Padding entre el titulo y el slider
+      margin: const EdgeInsets.symmetric(horizontal: 30), //Para que el texto no quede pegado a los bordes
+      child: Row(
+        children: [
+
+          if(title !=null)
+          Text(title!, style: titleStyle),
+
+          const Spacer(),
+
+          if(subtitle !=null)
+            FilledButton.tonal(
+              style: const ButtonStyle( visualDensity: VisualDensity.compact),
+              onPressed: (){},
+              child: Text(subtitle!, style: titleStyle.copyWith(fontSize: 12 , color: const Color(0xffF19F35))),
+            )
+          
+
+        ],
+      )
+    );
   }
 }
