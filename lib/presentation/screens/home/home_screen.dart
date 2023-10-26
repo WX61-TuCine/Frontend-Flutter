@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tu_cine/config/constants/environment.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -14,9 +15,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: Text('Home Screen'),
+        child: Text(Environment.theMovieDbKey),
       ),    
     );
   }
