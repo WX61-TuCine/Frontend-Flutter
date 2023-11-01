@@ -20,4 +20,6 @@ class Movie{
     //required this.trailerSrc,
     //required this.duration
   });
+
+  toList() {}
 }

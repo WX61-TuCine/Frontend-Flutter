@@ -1,7 +1,11 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tu_cine/domain/entities/movie.dart';
 
-class CineclubHorizontalListview extends StatelessWidget {
+
+//Para colocar un listener en el scroll infinito pasar a stateful widget
+class CineclubHorizontalListview extends StatefulWidget {
   //Los cineclubs que quiere mostrar
   final List<Movie> movies;
   final String? title;
@@ -17,15 +21,129 @@ class CineclubHorizontalListview extends StatelessWidget {
   });
 
   @override
+  State<CineclubHorizontalListview> createState() => _CineclubHorizontalListviewState();
+}
+
+class _CineclubHorizontalListviewState extends State<CineclubHorizontalListview> {
+
+  final scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    scrollController.addListener(() {
+      if (widget.loadNextPage == null) return;
+      if ((scrollController.position.pixels + 200) >= scrollController.position.maxScrollExtent) {
+        widget.loadNextPage!();
+      }
+    });
+  }
+
+  //ParA destruir el listener
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: 100,
+        height: 310,
         child: Column(
           children: [
-            if (title != null || subtitle != null)
-              _Title(title: title, subtitle: subtitle),
+            //Title
+            if (widget.title != null || widget.subtitle != null)
+              _Title(title: widget.title, subtitle: widget.subtitle),
+
+            //Listview
+            Expanded(
+              child: ListView.builder(
+                controller: scrollController, //Para el scroll infinito
+                scrollDirection: Axis.horizontal,
+                itemCount: widget.movies.length,
+                physics:
+                    const BouncingScrollPhysics(), //Anddroid y IOS se comporten igual
+                itemBuilder: (context, index) {
+                  //return _Slide(movie: widget.movies[index]);
+                  return FadeInRight(child: _Slide(movie: widget.movies[index]));
+                },
+              ),
+            )
           ],
         ));
+  }
+}
+
+class _Slide extends StatelessWidget {
+  final Movie movie;
+
+  const _Slide({required this.movie});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        margin: const EdgeInsets.symmetric(horizontal: 8),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+
+          //Imagen
+          SizedBox(
+              width: 130,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Image.network(
+                  movie.posterSrc,
+                  fit: BoxFit.cover, //Todas las imágenes del mismo tamaño
+                  width: 130,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress != null) {
+                      return const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Center(
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
+                      );
+                    } 
+                    return GestureDetector(
+
+                      onTap: () => context.push('/movie/${movie.id}'),
+                      child: FadeIn(child: child),
+                    );
+
+                    
+                  },
+                ),
+              )),
+
+          const SizedBox(height: 5),
+
+          //Titulo
+          SizedBox(
+            width: 130,
+            child: Text(
+              movie.title,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
+              
+            ),
+          ),
+
+          //Location
+          const Row(
+            children: [
+              Icon(Icons.location_pin, color: Colors.black),
+              SizedBox(width: 3),
+              Text('Locacion', style: TextStyle(fontSize: 10, color: Colors.black)),
+            ],
+          )
+
+        ]));
   }
 }
 
@@ -40,7 +158,6 @@ class _Title extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     const titleStyle = TextStyle(
       fontSize: 18,
       fontWeight: FontWeight.bold,
@@ -48,26 +165,23 @@ class _Title extends StatelessWidget {
     );
 
     return Container(
-      padding: const EdgeInsets.only(top:10), //Padding entre el titulo y el slider
-      margin: const EdgeInsets.symmetric(horizontal: 30), //Para que el texto no quede pegado a los bordes
-      child: Row(
-        children: [
-
-          if(title !=null)
-          Text(title!, style: titleStyle),
-
-          const Spacer(),
-
-          if(subtitle !=null)
-            FilledButton.tonal(
-              style: const ButtonStyle( visualDensity: VisualDensity.compact),
-              onPressed: (){},
-              child: Text(subtitle!, style: titleStyle.copyWith(fontSize: 12 , color: const Color(0xffF19F35))),
-            )
-          
-
-        ],
-      )
-    );
+        padding: const EdgeInsets.only(
+            top: 10), //Padding entre el titulo y el slider
+        margin: const EdgeInsets.symmetric(
+            horizontal: 10), //Para que el texto no quede pegado a los bordes
+        child: Row(
+          children: [
+            if (title != null) Text(title!, style: titleStyle),
+            const Spacer(),
+            if (subtitle != null)
+              FilledButton.tonal(
+                style: const ButtonStyle(visualDensity: VisualDensity.compact),
+                onPressed: () {},
+                child: Text(subtitle!,
+                    style: titleStyle.copyWith(
+                        fontSize: 12, color: const Color(0xffF19F35))),
+              )
+          ],
+        ));
   }
 }

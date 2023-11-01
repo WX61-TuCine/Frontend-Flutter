@@ -12,6 +12,7 @@ class MoviesSlideshow extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
         height: 349,
+        //height: 250,
         width: double.infinity,
         child: Swiper(
           viewportFraction: 0.8,
