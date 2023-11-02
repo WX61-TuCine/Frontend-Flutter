@@ -1,7 +1,8 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tu_cine/domain/entities/movie.dart';
-import 'package:tu_cine/presentation/providers/movies/movie_info_provider.dart';
+import 'package:tu_cine/presentation/providers/providers.dart';
 
 class MovieScreen extends ConsumerStatefulWidget {
   static const routeName = 'movie_screen';
@@ -24,6 +25,7 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
 
     //Aqui se llama al provider
     ref.read(movieInfoProvider.notifier).loadMovie(widget.movieId);
+    ref.read(actorsByMovieProvider.notifier).loadActors(widget.movieId);
   }
 
   @override
@@ -80,14 +82,16 @@ class _MovieDetails extends StatelessWidget {
                   width: size.width * 0.95,
                   height: 204,
                   fit: BoxFit.cover,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress != null) return const SizedBox();
+                    return FadeIn(child: child);
+                  },
                 ),
               ),
             ],
-          ), 
+          ),
         ),
-
         const SizedBox(height: 10),
-
         Column(
           children: [
             Padding(
@@ -103,23 +107,20 @@ class _MovieDetails extends StatelessWidget {
                       textAlign: TextAlign.start,
                     ),
                   ),
-
                   const Spacer(),
-                  
                   FilledButton.tonal(
                     style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(const Color(0xffFE0000)),
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          const Color(0xffFE0000)),
                     ),
                     onPressed: () {},
                     child: const Text(
                       'Ver trailer',
                       style: TextStyle(fontSize: 15, color: Colors.white),
-                      
-                      ),
+                    ),
                   )
                 ],
               ),
-
             ),
           ],
         ),
@@ -127,34 +128,91 @@ class _MovieDetails extends StatelessWidget {
         const SizedBox(height: 5),
 
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Wrap(
-            children:[
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Wrap(children: [
               ...movie.genreIds.map((gender) => Container(
-                margin: const EdgeInsets.only(right: 10),
-                child: Chip(
-                  label: Text(gender, style: TextStyle(fontSize: 10)),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    )
-                  ),
-                )
-              )
-            ]
-          )  
-        ),
+                    margin: const EdgeInsets.only(right: 10),
+                    child: Chip(
+                        label: Text(gender, style: TextStyle(fontSize: 10)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        )),
+                  ))
+            ])),
 
-        const SizedBox(height: 7),
+        //const SizedBox(height: 7),
 
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.all(10),
           child: Text(
             movie.synopsis,
             style: titleStyle.bodyMedium,
             textAlign: TextAlign.justify,
           ),
         ),
+
+        _ActorsByMovie(movieId: movie.id.toString())
       ],
+    );
+  }
+}
+
+class _ActorsByMovie extends ConsumerWidget {
+  final String movieId;
+
+  const _ActorsByMovie({required this.movieId});
+
+  @override
+  Widget build(BuildContext context, ref) {
+    final actorsByMovie = ref.watch(actorsByMovieProvider);
+
+    if (actorsByMovie[movieId] == null) {
+      return const Center(
+          child: CircularProgressIndicator(
+        strokeWidth: 2,
+      ));
+    }
+    final actors = actorsByMovie[movieId]!;
+    return SizedBox(
+      height: 300,
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: actors.length,
+          itemBuilder: (context, index) {
+            final actor = actors[index];
+
+            return Container(
+                padding: const EdgeInsets.all(8.0),
+                width: 135,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    //Actor photo
+                    FadeInRight(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.network(
+                          actor.profileSrc,
+                          width: 135,
+                          height: 180,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 5),
+                    //Nombre
+                    Text(actor.firstName, maxLines: 2),
+                    Text(
+                      actor.biography,
+                      maxLines: 2,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          overflow: TextOverflow.ellipsis),
+                    )
+                  ],
+                ));
+          }),
     );
   }
 }
