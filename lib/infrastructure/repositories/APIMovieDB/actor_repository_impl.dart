@@ -1,7 +1,7 @@
 
-import 'package:tu_cine/domain/datasources/actors_datasource.dart';
+import 'package:tu_cine/domain/datasources/APIMovieDB/actors_datasource.dart';
 import 'package:tu_cine/domain/entities/actor.dart';
-import 'package:tu_cine/domain/repositories/actors_repository.dart';
+import 'package:tu_cine/domain/repositories/APIMovieDB/actors_repository.dart';
 
 class ActorRepositoryImpl extends ActorsRepository {
 

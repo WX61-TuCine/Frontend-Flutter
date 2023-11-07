@@ -1,6 +1,6 @@
-import 'package:tu_cine/domain/datasources/cineclubs_datasource.dart';
+import 'package:tu_cine/domain/datasources/APITuCine/cineclubs_datasource.dart';
 import 'package:tu_cine/domain/entities/cineclub.dart';
-import 'package:tu_cine/domain/repositories/cineclubs_repository.dart';
+import 'package:tu_cine/domain/repositories/APITuCine/cineclubs_repository.dart';
 
 class CineclubRepositoryImpl extends CineclubsRepository{
 

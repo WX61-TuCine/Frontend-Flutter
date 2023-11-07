@@ -1,5 +1,5 @@
 import 'package:tu_cine/domain/entities/cineclub.dart';
-import 'package:tu_cine/infrastructure/models/cinecludb/cineclub_response.dart';
+import 'package:tu_cine/infrastructure/models/apiTuCine/cineclub_response.dart';
 
 class CineclubMapper {
   static Cineclub cineclubToEntity(CineclubResponse cineclubResponse) => Cineclub (
@@ -17,9 +17,7 @@ class CineclubMapper {
     description: cineclubResponse.description != null
       ? '${cineclubResponse.description}'
       : 'No hay información',
-    address: cineclubResponse.address != null
-      ? '${cineclubResponse.address}'
-      : 'No hay información',
+    address: cineclubResponse.address,
     state: cineclubResponse.state != null
       ? '${cineclubResponse.state}'
       : 'No hay información',

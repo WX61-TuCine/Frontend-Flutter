@@ -88,7 +88,9 @@ class _Slide extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         margin: const EdgeInsets.symmetric(horizontal: 8),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start, 
+          children: [
 
           //Imagen
           SizedBox(
@@ -145,7 +147,9 @@ class _Slide extends StatelessWidget {
             ],
           )
 
-        ]));
+        ])
+        
+    );
   }
 }
 

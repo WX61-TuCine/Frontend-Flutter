@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:tu_cine/domain/datasources/cineclubs_datasource.dart';
+import 'package:tu_cine/domain/datasources/APITuCine/cineclubs_datasource.dart';
 import 'package:tu_cine/domain/entities/cineclub.dart';
-import 'package:tu_cine/infrastructure/mappers/cineclub_mapper.dart';
-import 'package:tu_cine/infrastructure/models/cinecludb/cineclub_response.dart';
+import 'package:tu_cine/infrastructure/mappers/APITuCine/cineclub_mapper.dart';
+import 'package:tu_cine/infrastructure/models/apiTuCine/cineclub_response.dart';
 
 class CineclubDatasource extends CineclubsDatasource {
   final dio = Dio(BaseOptions(

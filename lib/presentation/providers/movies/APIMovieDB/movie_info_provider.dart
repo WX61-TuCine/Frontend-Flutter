@@ -2,7 +2,7 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tu_cine/domain/entities/movie.dart';
-import 'package:tu_cine/presentation/providers/movies/movies_repository_provider.dart';
+import 'package:tu_cine/presentation/providers/movies/APIMovieDB/movies_repository_provider.dart';
 
 final movieInfoProvider = StateNotifierProvider<MovieMapNotifier,Map<String, Movie>> ((ref) {
   final getMovie = ref.watch(movieRepositoryProvider);

@@ -11,7 +11,7 @@ class MoviesSlideshow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 349,
+      height: 380,
       width: double.infinity,
       child: Swiper(
         viewportFraction: 0.8,
@@ -41,6 +41,7 @@ class _Slide extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     final decoration = BoxDecoration(
       borderRadius: BorderRadius.circular(20),
       boxShadow: const [
@@ -48,25 +49,52 @@ class _Slide extends StatelessWidget {
       ],
     );
 
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 30),
-      child: DecoratedBox(
-        decoration: decoration,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: Image.network(
-            movie.posterSrc,
-            fit: BoxFit.cover,
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress != null) {
-                return const DecoratedBox(
-                  decoration: BoxDecoration(color: Colors.black12),
-                );
-              }
-              return FadeIn(child: child);
-            },
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8),
+      child: Column(
+        children: [
+          SizedBox(
+            width: 320,
+            height: 330,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 30),
+              child: DecoratedBox(
+                decoration: decoration,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.network(
+                    movie.posterSrc,
+                    fit: BoxFit.cover,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress != null) {
+                        return const DecoratedBox(
+                          decoration: BoxDecoration(color: Colors.black12),
+                        );
+                      }
+                      return FadeIn(child: child);
+                    },
+                  ),
+                ),
+              ),
+            ),
           ),
-        ),
+
+          //Titulo
+          SizedBox(
+            width: 130,
+            child: Text(
+              movie.title,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+     
+        ],
       ),
     );
   }

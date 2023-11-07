@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:tu_cine/config/constants/environment.dart';
-import 'package:tu_cine/domain/datasources/movies_datasource.dart';
+import 'package:tu_cine/domain/datasources/APIMovieDB/movies_datasource.dart';
 
 import 'package:tu_cine/domain/entities/movie.dart';
-import 'package:tu_cine/infrastructure/mappers/movie_mapper.dart';
+import 'package:tu_cine/infrastructure/mappers/APIMovieDB/movie_mapper.dart';
 import 'package:tu_cine/infrastructure/models/moviedb/movie_details.dart';
 import 'package:tu_cine/infrastructure/models/moviedb/moviedb_response.dart';
 

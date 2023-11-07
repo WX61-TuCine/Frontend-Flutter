@@ -6,22 +6,28 @@ class MovieMapper {
   static Movie movieDBToEntity(MovieMovieDB moviedb) => Movie(
         id: moviedb.id,
         title: moviedb.title,
+        year: 0,
         synopsis: moviedb.overview,
         genreIds: moviedb.genreIds.map((e) => e.toString()).toList(),
         posterSrc: (moviedb.posterPath != '')
             ? 'https://image.tmdb.org/t/p/w500/${moviedb.posterPath}'
             : 'noposter',
-        releaseDate: moviedb.releaseDate,
+        //releaseDate: moviedb.releaseDate,
+        trailerSrc: '',
+        duration: 0,
       );
 
   static Movie movieDetailsToEntity(MovieDetails movie) => Movie(
         id: movie.id,
         title: movie.title,
+        year: 0,
         synopsis: movie.overview,
         genreIds: movie.genres.map((e) => e.name).toList(),
         posterSrc: (movie.posterPath != '')
             ? 'https://image.tmdb.org/t/p/w500/${movie.posterPath}'
             : 'noposter',
-        releaseDate: movie.releaseDate,
+        //releaseDate: movie.releaseDate,
+        trailerSrc: '',
+        duration: 0,
       );
 }

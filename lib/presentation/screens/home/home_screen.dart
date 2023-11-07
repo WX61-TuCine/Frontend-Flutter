@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tu_cine/presentation/providers/movies/APITuCine/movies_provider.dart';
 import 'package:tu_cine/presentation/providers/providers.dart';
 import 'package:tu_cine/presentation/widgets/movies/cineclub_horizontal_listview.dart';
 import 'package:tu_cine/presentation/widgets/shared/custom_bottom_navigation.dart';
@@ -38,6 +39,7 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     ref.read(topRatedMoviesProvider.notifier).loadNextPage();
 
     ref.read(cineclubsProvider.notifier).getCineclubs();
+    ref.read(moviesProvider.notifier).getNowPlayingMovies();
   }
 
   @override
