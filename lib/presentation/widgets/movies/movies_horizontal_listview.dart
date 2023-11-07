@@ -1,29 +1,30 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tu_cine/domain/entities/cineclub.dart';
+import 'package:tu_cine/domain/entities/movie.dart';
+
 
 //Para colocar un listener en el scroll infinito pasar a stateful widget
-class CineclubHorizontalListview extends StatefulWidget {
+class MoviesHorizontalListview extends StatefulWidget {
   //Los cineclubs que quiere mostrar
-  final List<Cineclub> cineclubs;
-  final String? name;
+  final List<Movie> movies;
+  final String? title;
   final String? subtitle;
   final VoidCallback? loadNextPage; //Scroll infinitamente
 
-  const CineclubHorizontalListview({
+  const MoviesHorizontalListview({
     super.key,
-    required this.cineclubs,
-    this.name,
+    required this.movies,
+    this.title,
     this.subtitle,
     this.loadNextPage,
   });
 
   @override
-  State<CineclubHorizontalListview> createState() => _CineclubHorizontalListviewState();
+  State<MoviesHorizontalListview> createState() => _MoviesHorizontalListviewState();
 }
 
-class _CineclubHorizontalListviewState extends State<CineclubHorizontalListview> {
+class _MoviesHorizontalListviewState extends State<MoviesHorizontalListview> {
 
   final scrollController = ScrollController();
 
@@ -50,26 +51,26 @@ class _CineclubHorizontalListviewState extends State<CineclubHorizontalListview>
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: 210,
+        height: 330,
         child: Column(
           children: [
             //Title
-            if (widget.name != null || widget.subtitle != null)
-              _Title(title: widget.name, subtitle: widget.subtitle),
+            if (widget.title != null || widget.subtitle != null)
+              _Title(title: widget.title, subtitle: widget.subtitle),
 
-            const SizedBox(height: 10), //Padding entre el titulo y el slider
+            const SizedBox(height: 10),
 
             //Listview
             Expanded(
               child: ListView.builder(
                 controller: scrollController, //Para el scroll infinito
                 scrollDirection: Axis.horizontal,
-                itemCount: widget.cineclubs.length,
+                itemCount: widget.movies.length,
                 physics:
                     const BouncingScrollPhysics(), //Anddroid y IOS se comporten igual
                 itemBuilder: (context, index) {
                   //return _Slide(movie: widget.movies[index]);
-                  return FadeInRight(child: _Slide(cineclub: widget.cineclubs[index]));
+                  return FadeInRight(child: _Slide(movie: widget.movies[index]));
                 },
               ),
             )
@@ -79,9 +80,9 @@ class _CineclubHorizontalListviewState extends State<CineclubHorizontalListview>
 }
 
 class _Slide extends StatelessWidget {
-  final Cineclub cineclub;
+  final Movie movie;
 
-  const _Slide({required this.cineclub});
+  const _Slide({required this.movie});
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +96,7 @@ class _Slide extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: Image.network(
-                  cineclub.logoSrc,
+                  movie.posterSrc,
                   fit: BoxFit.cover, //Todas las imágenes del mismo tamaño
                   width: 130,
                   loadingBuilder: (context, child, loadingProgress) {
@@ -109,7 +110,7 @@ class _Slide extends StatelessWidget {
                     } 
                     return GestureDetector(
 
-                      onTap: () => context.push('/movie/${cineclub.id}'),
+                      onTap: () => context.push('/movie/${movie.id}'),
                       child: FadeIn(child: child),
                     );
 
@@ -124,7 +125,7 @@ class _Slide extends StatelessWidget {
           SizedBox(
             width: 130,
             child: Text(
-              cineclub.name,
+              movie.title,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
@@ -136,11 +137,11 @@ class _Slide extends StatelessWidget {
           ),
 
           //Location
-          Row(
+          const Row(
             children: [
-              const Icon(Icons.location_pin, color: Colors.black, size: 15),
-              const SizedBox(width: 3),
-              Text(cineclub.address, style: const TextStyle(fontSize: 10, color: Colors.black)),
+              Icon(Icons.location_pin, color: Colors.black),
+              SizedBox(width: 3),
+              Text('Locacion', style: TextStyle(fontSize: 10, color: Colors.black)),
             ],
           )
 

@@ -6,3 +6,6 @@ export 'movies/movies_providers.dart';
 export 'movies/movies_repository_provider.dart';
 export 'movies/movies_slideshow_provider.dart';
 export 'movies/movie_info_provider.dart';
+
+export 'cineclubs/cineclubs_provider.dart';
+export 'cineclubs/cineclubs_repository_provider.dart';

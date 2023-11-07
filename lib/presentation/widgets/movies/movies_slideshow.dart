@@ -3,59 +3,33 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:tu_cine/domain/entities/movie.dart';
 
-class MoviesSlideshow extends StatefulWidget {
+class MoviesSlideshow extends StatelessWidget {
   final List<Movie> movies;
 
   const MoviesSlideshow({Key? key, required this.movies}) : super(key: key);
 
   @override
-  _MoviesSlideshowState createState() => _MoviesSlideshowState();
-}
-
-class _MoviesSlideshowState extends State<MoviesSlideshow> {
-  int _currentIndex = 0;
-
-  @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 349,
-          width: double.infinity,
-          child: Swiper(
-            viewportFraction: 0.8,
-            scale: 0.9,
-            autoplay: true,
-            pagination: const SwiperPagination(
-              margin: EdgeInsets.only(top: 0),
-              builder: DotSwiperPaginationBuilder(
-                activeColor: Color(0xffF19F35),
-                color: Colors.grey,
-              ),
-            ),
-            itemCount: widget.movies.length,
-            onIndexChanged: (index) {
-              setState(() {
-                _currentIndex = index;
-              });
-            },
-            itemBuilder: (context, index) {
-              final movie = widget.movies[index];
-              return _Slide(movie: movie);
-            },
+    return SizedBox(
+      height: 349,
+      width: double.infinity,
+      child: Swiper(
+        viewportFraction: 0.8,
+        scale: 0.9,
+        autoplay: true,
+        pagination: const SwiperPagination(
+          margin: EdgeInsets.only(top: 0),
+          builder: DotSwiperPaginationBuilder(
+            activeColor: Color(0xffF19F35),
+            color: Colors.grey,
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            widget.movies[_currentIndex].title,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      ],
+        itemCount: movies.length,
+        itemBuilder: (context, index) {
+          final movie = movies[index];
+          return _Slide(movie: movie);
+        },
+      ),
     );
   }
 }

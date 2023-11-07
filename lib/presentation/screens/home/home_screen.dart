@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tu_cine/presentation/providers/providers.dart';
+import 'package:tu_cine/presentation/widgets/movies/cineclub_horizontal_listview.dart';
 import 'package:tu_cine/presentation/widgets/shared/custom_bottom_navigation.dart';
 import 'package:tu_cine/presentation/widgets/widgets.dart';
 
@@ -35,15 +36,19 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     ref.read(popularMoviesProvider.notifier).loadNextPage();
     ref.read(upcomingMoviesProvider.notifier).loadNextPage();
     ref.read(topRatedMoviesProvider.notifier).loadNextPage();
+
+    ref.read(cineclubsProvider.notifier).getCineclubs();
   }
 
   @override
   Widget build(BuildContext context) {
-    final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
+    //final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
     final slideShowMovies = ref.watch(moviesSlideshowProvider);
-    final popularMovies = ref.watch(popularMoviesProvider);
+    //final popularMovies = ref.watch(popularMoviesProvider);
     final upcomingMovies = ref.watch(upcomingMoviesProvider);
-    final topRatedMovies = ref.watch(topRatedMoviesProvider);
+
+  
+    final cineclubs = ref.watch(cineclubsProvider);
 
     return CustomScrollView(
 
@@ -68,42 +73,26 @@ class _HomeViewState extends ConsumerState<_HomeView> {
               children: [
                 //const CustomAppbar(),
                 MoviesSlideshow(movies: slideShowMovies),
-
+           
                 CineclubHorizontalListview(
-                  movies: popularMovies,
-                  title: 'Cineclubs',
+                  cineclubs: cineclubs,
+                  name: 'Cineclubs',
                   subtitle: 'Ver más',
                   loadNextPage: () => ref
-                      .read(popularMoviesProvider.notifier)
-                      .loadNextPage(), //Scroll infinitamente
-                ),
+                      .read(cineclubsProvider.notifier)
+                      .getCineclubs(), //Scroll infinitamente
+                  
+                  ),
 
-                CineclubHorizontalListview(
-                  movies: nowPlayingMovies,
-                  title: 'Cineclubs',
-                  subtitle: 'Ver más',
-                  loadNextPage: () => ref
-                      .read(nowPlayingMoviesProvider.notifier)
-                      .loadNextPage(), //Scroll infinitamente
-                ),
-
-                CineclubHorizontalListview(
+                MoviesHorizontalListview(
                   movies: upcomingMovies,
-                  title: 'Cineclubs',
+                  title: 'Próximamente',
                   subtitle: 'Ver más',
                   loadNextPage: () => ref
                       .read(upcomingMoviesProvider.notifier)
                       .loadNextPage(), //Scroll infinitamente
                 ),                
 
-                CineclubHorizontalListview(
-                  movies: topRatedMovies,
-                  title: 'Cineclubs',
-                  subtitle: 'Ver más',
-                  loadNextPage: () => ref
-                      .read(topRatedMoviesProvider.notifier)
-                      .loadNextPage(), //Scroll infinitamente
-                ), 
                 const SizedBox(height: 10),
               ],
             );
