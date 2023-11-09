@@ -33,6 +33,7 @@ dependencies:
   flutter:
     sdk: flutter
   go_router: ^12.0.0
+  ticket_widget: ^0.0.1
 
 dev_dependencies:
 

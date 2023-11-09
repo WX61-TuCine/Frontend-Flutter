@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'tiket_view.dart';
 import 'movie_info_element.dart';
 
 class MyTicketsScreen extends StatefulWidget {
@@ -59,12 +59,64 @@ class _MyTicketsScreenState extends State<MyTicketsScreen> {
                   elevation: 8.0,
                   margin: const EdgeInsets.all(8.0),
                   child: Container(
-                    decoration: const BoxDecoration(color: Colors.orangeAccent),
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                      title: Text(movieTiket.name, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
-                      subtitle: Text(movieTiket.state, style: const TextStyle(color: Colors.black12, fontWeight: FontWeight.bold),),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 4,
+                            spreadRadius: 2,
+                          )
+                        ],
                     ),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                          title: Text(movieTiket.name, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
+                          subtitle: Text(movieTiket.state, style: const TextStyle(color: Colors.black12, fontWeight: FontWeight.bold),),
+                          trailing: ClipRRect(
+                            borderRadius: BorderRadius.circular(5),
+                            child: SizedBox.fromSize(
+                              size: Size.fromRadius(30),
+                              child: Image.network(movieTiket.img, fit: BoxFit.cover,),
+                            )
+                          ),
+                          onTap: (){
+                            Navigator.push(context, 
+                                MaterialPageRoute(
+                                    builder: (BuildContext context)=>TiketView(movieTiket)));
+                          },
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(Icons.location_on_outlined,
+                                  color: Colors.black54,
+                                ),
+                                SizedBox(width: 5,),
+                                Text(movieTiket.address,
+                                style: TextStyle(
+                                  color: Colors.black54),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                SizedBox(width: 5),
+                                Text(movieTiket.nameCine, style: TextStyle(
+                                    color: Colors.black54
+                                ),)
+                              ],
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+
                   ),
                 );
           }),)
