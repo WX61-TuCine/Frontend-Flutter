@@ -9,15 +9,14 @@ class CineclubDatasource extends CineclubsDatasource {
     baseUrl: 'https://backend-production-733a.up.railway.app/api/TuCine/v1',
   ));
 
-List<Cineclub> _jsonToCineclubs(List<dynamic> json){
-  final List<Cineclub> cineclubs = json.map((data) {
-    final cineclubResponse = CineclubResponse.fromJson(data);
-    return CineclubMapper.cineclubToEntity(cineclubResponse);
-  }).toList();
+  List<Cineclub> _jsonToCineclubs(List<dynamic> json) {
+    final List<Cineclub> cineclubs = json.map((data) {
+      final cineclubResponse = CineclubResponse.fromJson(data);
+      return CineclubMapper.cineclubToEntity(cineclubResponse);
+    }).toList();
 
-  return cineclubs;
-}
-
+    return cineclubs;
+  }
 
   @override
   Future<List<Cineclub>> getCineclubs() async {

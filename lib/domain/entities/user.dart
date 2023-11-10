@@ -10,6 +10,8 @@ class User {
   final String password;
   final String imageSrc;
   final String bankAccount;
+  final dynamic typeUser;
+  final dynamic gender;
 
   User({
     required this.id,
@@ -23,6 +25,8 @@ class User {
     required this.password,
     required this.imageSrc,
     required this.bankAccount,
+    required this.typeUser,
+    required this.gender,
   });
 
 }
