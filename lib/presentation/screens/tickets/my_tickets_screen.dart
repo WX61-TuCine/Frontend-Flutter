@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'tiket_view.dart';
 import 'movie_info_element.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class MyTicketsScreen extends StatefulWidget {
   static const routeName = 'my_tickets_screen';
@@ -11,12 +13,35 @@ class MyTicketsScreen extends StatefulWidget {
 }
 
 class _MyTicketsScreenState extends State<MyTicketsScreen> {
+
   final List<String> states = [
     'pasado',
     'proximo',
     'cancelado'
   ];
   List<String> selectedStates = [];
+
+  String provisionalUrl = "https://backend-production-733a.up.railway.app/api/TuCine/v1/tickets";
+  List lTiccketsD = [];
+
+  Future<String> makeRequest() async{
+    var response = await http.get(Uri.parse(provisionalUrl),
+    headers: {'Accept': 'application/json'});
+
+    setState(() {
+      var extractData = json.decode(response.body);
+      lTiccketsD = extractData;
+    });
+
+    print(response.body);
+
+    return response.body;
+
+  }
+  @override
+  void initState(){
+    this.makeRequest();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,9 +78,10 @@ class _MyTicketsScreenState extends State<MyTicketsScreen> {
             ),
           ),
           Expanded(child: ListView.builder(
-              itemCount:filterMovies.length,
-              itemBuilder: (context, index){
-                final movieTiket = filterMovies[index];
+              //itemCount:filterMovies.length,
+            itemCount: lTiccketsD == null ? 0 : lTiccketsD.length,
+              itemBuilder: (context, i){
+                final movieTiket = filterMovies[i];
                 return Card(
                   elevation: 8.0,
                   margin: const EdgeInsets.all(8.0),
@@ -75,7 +101,7 @@ class _MyTicketsScreenState extends State<MyTicketsScreen> {
                       children: [
                         ListTile(
                           contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                          title: Text(movieTiket.name, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
+                          title: Text(lTiccketsD[i]['status'], style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
                           subtitle: Text(movieTiket.state, style: const TextStyle(color: Colors.black12, fontWeight: FontWeight.bold),),
                           trailing: ClipRRect(
                             borderRadius: BorderRadius.circular(5),

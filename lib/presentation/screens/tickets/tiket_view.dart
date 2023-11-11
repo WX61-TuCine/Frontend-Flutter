@@ -3,6 +3,7 @@ import 'package:ticket_widget/ticket_widget.dart';
 import 'package:tu_cine/presentation/providers/providers.dart';
 
 class TiketView extends StatelessWidget {
+
   TiketView(this.data);
   final data;
 
@@ -104,7 +105,7 @@ class TiketView extends StatelessWidget {
                               Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    ticketDetails('Precio total', 'S/ 5.25'),
+                                    ticketDetails('Precio total', 'S/ 15.25'),
                                     ticketDetails('Order Id', '112345678')
                                   ]),
                             ],
