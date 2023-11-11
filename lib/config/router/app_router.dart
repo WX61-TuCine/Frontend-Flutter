@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:tu_cine/presentation/screens/home/home_screen.dart';
 import 'package:tu_cine/presentation/screens/movies/movie_screen.dart';
+import 'package:tu_cine/presentation/screens/tickets/my_tickets_screen.dart';
 
 final appRouter = GoRouter(initialLocation: '/', routes: [
   GoRoute(
@@ -15,5 +16,10 @@ final appRouter = GoRouter(initialLocation: '/', routes: [
         final movieId = state.pathParameters['movieId'] ?? '';
 
         return MovieScreen(movieId: movieId);
-      })
+      }),
+  GoRoute(
+    path: '/tickets',
+    name: MyTicketsScreen.routeName,
+    builder: (context, state) =>const MyTicketsScreen(),
+  )
 ]);

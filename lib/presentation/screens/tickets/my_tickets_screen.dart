@@ -3,6 +3,7 @@ import 'tiket_view.dart';
 import 'movie_info_element.dart';
 
 class MyTicketsScreen extends StatefulWidget {
+  static const routeName = 'my_tickets_screen';
   const MyTicketsScreen({super.key});
 
   @override
@@ -24,7 +25,7 @@ class _MyTicketsScreenState extends State<MyTicketsScreen> {
     }).toList();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mis Tikets'),
+        title: const Text('Mis Tickets'),
         centerTitle: true,
       ),
       body: Column(
