@@ -25,7 +25,7 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
 
     //Aqui se llama al provider
     ref.read(movieInfoProvider.notifier).loadMovie(widget.movieId);
-    ref.read(actorsByMovieProvider.notifier).loadActors(widget.movieId);
+    //ref.read(actorsByMovieProvider.notifier).loadActors(widget.movieId);
   }
 
   @override
@@ -133,7 +133,7 @@ class _MovieDetails extends StatelessWidget {
               ...movie.genreIds.map((gender) => Container(
                     margin: const EdgeInsets.only(right: 10),
                     child: Chip(
-                        label: Text(gender, style: TextStyle(fontSize: 10)),
+                        label: Text(gender, style: const TextStyle(fontSize: 10)),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         )),
@@ -151,7 +151,7 @@ class _MovieDetails extends StatelessWidget {
           ),
         ),
 
-        _ActorsByMovie(movieId: movie.id.toString())
+        //_ActorsByMovie(movieId: movie.id.toString())
       ],
     );
   }

@@ -10,12 +10,12 @@ class MovietucineDatasource extends MoviesDatasource {
   ));
 
   List<Movie> _jsonToMovies(List<dynamic> json) {
-  final List<Movie> movies = json.map((data) {
-    final movieResponse = MovieResponse.fromJson(data);
-    return MovieMapper.movieToEntity(movieResponse);
-  }).toList();
+    final List<Movie> movies = json.map((data) {
+      final movieResponse = MovieResponse.fromJson(data);
+      return MovieMapper.movieToEntity(movieResponse);
+    }).toList();
 
-  return movies;
+    return movies;
   }
 
   @override
@@ -23,5 +23,17 @@ class MovietucineDatasource extends MoviesDatasource {
     final response = await dio.get('/films');
 
     return _jsonToMovies(response.data);
+  }
+
+  @override
+  Future<Movie> getMovieById(String id) async {
+    final response = await dio.get('/films/$id');
+    if (response.statusCode != 200) throw Exception('Error al obtener la pelicula');
+    
+    final movieDetails = MovieResponse.fromJson(response.data);
+
+    final Movie movie = MovieMapper.movieToEntity(movieDetails);
+
+    return movie;
   }
 }
