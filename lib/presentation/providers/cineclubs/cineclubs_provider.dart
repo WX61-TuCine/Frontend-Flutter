@@ -11,6 +11,7 @@ final cineclubsProvider = StateNotifierProvider<CineclubsNotifier, List<Cineclub
   );
 });
 
+
 typedef CineclubCallBack = Future<List<Cineclub>> Function();
 
 class CineclubsNotifier extends StateNotifier<List<Cineclub>>{

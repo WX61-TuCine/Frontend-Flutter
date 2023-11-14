@@ -2,7 +2,7 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tu_cine/domain/entities/actor.dart';
-import 'package:tu_cine/presentation/providers/actors/actors_repository_provider.dart';
+import 'package:tu_cine/presentation/providers/actors/APIMovieDB/actors_repository_provider.dart';
 
 final actorsByMovieProvider = StateNotifierProvider<ActorsByMovieNotifier,Map<String, List<Actor>>> ((ref) {
   final actorsRepository = ref.watch(actorsRepositoryProvider);

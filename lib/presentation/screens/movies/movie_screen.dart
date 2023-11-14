@@ -2,7 +2,9 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tu_cine/domain/entities/movie.dart';
+import 'package:tu_cine/presentation/providers/cineclubs/cineclubs_movie_provider.dart';
 import 'package:tu_cine/presentation/providers/providers.dart';
+import 'package:tu_cine/presentation/widgets/movies/cineclub_horizontal_listview.dart';
 
 class MovieScreen extends ConsumerStatefulWidget {
   static const routeName = 'movie_screen';
@@ -26,12 +28,19 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
     //Aqui se llama al provider
     ref.read(movieInfoProvider.notifier).loadMovie(widget.movieId);
     ref.read(actorsByMovieProvider.notifier).loadActors(widget.movieId);
+    ref.read(cineclubsByMovieProvider.notifier).loadCineclubs(widget.movieId);
   }
 
   @override
   Widget build(BuildContext context) {
     //Aqui se obtiene la pelicula
     final Movie? movie = ref.watch(movieInfoProvider)[widget.movieId];
+
+    final cineclubs = ref.watch(cineclubsByMovieProvider)[widget.movieId];
+    // Then in your return statement:
+    if (cineclubs == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
     if (movie == null) {
       return const Center(child: CircularProgressIndicator());
@@ -48,9 +57,24 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
             ),
           ),
           SliverList(
-              delegate: SliverChildBuilderDelegate(
-                  (context, index) => _MovieDetails(movie: movie),
-                  childCount: 1))
+              delegate: SliverChildBuilderDelegate((context, index) {
+            return Column(
+              children: [
+                
+                _MovieDetails(movie: movie),
+
+                CineclubHorizontalListview(
+                  cineclubs: cineclubs,
+                  name: 'Cineclubs',
+                  subtitle: '.',
+                  loadNextPage: () => ref
+                      .read(cineclubsByMovieProvider.notifier)
+                      .loadCineclubs(widget.movieId),
+                )
+                
+              ],
+            );
+          }, childCount: 1))
         ],
       ),
     );
@@ -133,7 +157,8 @@ class _MovieDetails extends StatelessWidget {
               ...movie.genreIds.map((gender) => Container(
                     margin: const EdgeInsets.only(right: 10),
                     child: Chip(
-                        label: Text(gender, style: TextStyle(fontSize: 10)),
+                        label:
+                            Text(gender, style: const TextStyle(fontSize: 10)),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         )),

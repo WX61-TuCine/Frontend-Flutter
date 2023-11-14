@@ -2,8 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:tu_cine/domain/datasources/APITuCine/user_datasource.dart';
 import 'package:tu_cine/infrastructure/mappers/APITuCine/user_mapper.dart';
 
-import '../../domain/entities/user.dart';
-import '../models/apiTuCine/cineclub_response.dart';
+import '../../../domain/entities/user.dart';
+import '../../models/apiTuCine/cineclub_response.dart';
 
 class userTuCineDataSource extends UserDatasource {
   final dio = Dio(BaseOptions(
@@ -41,7 +41,7 @@ class userTuCineDataSource extends UserDatasource {
   @override
   Future<dynamic> createUser(UserPost user) async {
     try{
-      var userResponse = dio.post("/users/auth/sign-up", data: user.toJson());
+      //var userResponse = dio.post("/users/auth/sign-up", data: user.toJson());
     } on DioException catch (e) {
       if (e.response != null) {
         print(e.response?.data);
