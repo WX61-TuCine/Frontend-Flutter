@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tu_cine/domain/entities/user.dart';
 import 'package:tu_cine/infrastructure/datasources/APITuCine/user_tucine_datasource.dart';
 import 'package:tu_cine/infrastructure/models/apiTuCine/cineclub_response.dart';
 import 'package:tu_cine/presentation/screens/auth/log-in.dart';
@@ -22,8 +21,6 @@ class _SignInState extends State<SignIn> {
   final _phoneController = TextEditingController();
   final _dniController = TextEditingController();
   final _birthdayController = TextEditingController();
-  final _genderController = TextEditingController();
-  final _typeUserController = TextEditingController();
   final _passwordController = TextEditingController();
   bool hidePassword = true;
   bool termsValue = false;

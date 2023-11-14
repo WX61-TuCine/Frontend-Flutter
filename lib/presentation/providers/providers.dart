@@ -1,5 +1,8 @@
-export 'actors/actors_repository_provider.dart';
-export 'actors/actors_by_movie_provider.dart';
+/* export 'actors/APIMovieDB/actors_repository_provider.dart';
+export 'actors/APIMovieDB/actors_by_movie_provider.dart'; */
+
+export 'actors/APITuCine/actors_repository_provider.dart';
+export 'actors/APITuCine/actors_by_movie_provider.dart';
 
 /* export 'movies/APIMovieDB/movie_info_provider.dart';
 export 'movies/APIMovieDB/movies_providers.dart';

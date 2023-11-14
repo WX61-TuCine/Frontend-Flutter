@@ -41,7 +41,7 @@ class userTuCineDataSource extends UserDatasource {
   @override
   Future<dynamic> createUser(UserPost user) async {
     try{
-      var userResponse = dio.post("/users/auth/sign-up", data: user.toJson());
+      //var userResponse = dio.post("/users/auth/sign-up", data: user.toJson());
     } on DioException catch (e) {
       if (e.response != null) {
         print(e.response?.data);
