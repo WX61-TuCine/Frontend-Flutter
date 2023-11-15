@@ -40,6 +40,7 @@ class _MyTicketsScreenState extends State<MyTicketsScreen> {
   }
   @override
   void initState(){
+    super.initState();
     this.makeRequest();
   }
 
@@ -79,6 +80,7 @@ class _MyTicketsScreenState extends State<MyTicketsScreen> {
           ),
           Expanded(child: ListView.builder(
               //itemCount:filterMovies.length,
+            // ignore: unnecessary_null_comparison
             itemCount: lTiccketsD == null ? 0 : lTiccketsD.length,
               itemBuilder: (context, i){
                 final movieTiket = filterMovies[i];

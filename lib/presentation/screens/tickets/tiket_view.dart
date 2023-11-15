@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ticket_widget/ticket_widget.dart';
-import 'package:tu_cine/presentation/providers/providers.dart';
 
 class TiketView extends StatelessWidget {
 
