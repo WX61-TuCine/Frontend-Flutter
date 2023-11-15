@@ -2,8 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:tu_cine/domain/datasources/APITuCine/user_datasource.dart';
 import 'package:tu_cine/infrastructure/mappers/APITuCine/user_mapper.dart';
 
-import '../../domain/entities/user.dart';
-import '../models/apiTuCine/cineclub_response.dart';
+import '../../../domain/entities/user.dart';
+import '../../models/apiTuCine/cineclub_response.dart';
 
 class userTuCineDataSource extends UserDatasource {
   final dio = Dio(BaseOptions(
@@ -45,8 +45,8 @@ class userTuCineDataSource extends UserDatasource {
       } else {
         return false;
       }
-
-    } on DioException catch (e) {
+    }
+      on DioException catch (e) {
       if (e.response != null) {
         print('Error de respuesta de Dio: ${e.response?.data}');
       } else {

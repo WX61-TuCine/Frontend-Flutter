@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tu_cine/domain/entities/user.dart';
-import 'package:tu_cine/infrastructure/datasources/user_tucine_datasource.dart';
+import 'package:tu_cine/infrastructure/datasources/APITuCine/user_tucine_datasource.dart';
 import 'package:tu_cine/infrastructure/models/apiTuCine/cineclub_response.dart';
 import 'package:tu_cine/presentation/screens/auth/log-in.dart';
 

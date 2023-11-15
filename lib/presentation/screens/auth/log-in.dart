@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tu_cine/infrastructure/datasources/user_tucine_datasource.dart';
+import 'package:tu_cine/infrastructure/datasources/APITuCine/user_tucine_datasource.dart';
 import 'package:tu_cine/presentation/screens/auth/sign-in.dart';
 import 'package:tu_cine/presentation/screens/home/home_screen.dart';
 

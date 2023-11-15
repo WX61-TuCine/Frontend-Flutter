@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tu_cine/domain/entities/movie.dart';
-import 'package:tu_cine/presentation/providers/movies/APITuCine/movie_repository_provider.dart';
+import 'package:tu_cine/presentation/providers/movies/APITuCine/movies_repository_provider.dart';
 
 final moviesProvider = StateNotifierProvider<MoviesNotifier, List<Movie>>((ref) {
 

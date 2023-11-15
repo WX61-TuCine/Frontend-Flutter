@@ -7,7 +7,7 @@ class MovieResponse {
     final String trailerSrc;
     final int duration;
     final ContentRating contentRating;
-    final List<Actor> actors;
+    final List<Player> actors;
     final List<Category> categories;
 
     MovieResponse({
@@ -32,7 +32,7 @@ class MovieResponse {
         trailerSrc: json["trailerSrc"],
         duration: json["duration"],
         contentRating: ContentRating.fromJson(json["contentRating"]),
-        actors: List<Actor>.from(json["actors"].map((x) => Actor.fromJson(x))),
+        actors: List<Player>.from(json["actors"].map((x) => Player.fromJson(x))),
         categories: List<Category>.from(json["categories"].map((x) => Category.fromJson(x))),
     );
 
@@ -50,15 +50,15 @@ class MovieResponse {
     };
 }
 
-class Actor {
+class Player {
     final int id;
     final String firstName;
     final String lastName;
     final String biography;
     final DateTime birthday;
-    final String profileSrc;
+    final String? profileSrc;
 
-    Actor({
+    Player({
         required this.id,
         required this.firstName,
         required this.lastName,
@@ -67,7 +67,7 @@ class Actor {
         required this.profileSrc,
     });
 
-    factory Actor.fromJson(Map<String, dynamic> json) => Actor(
+    factory Player.fromJson(Map<String, dynamic> json) => Player(
         id: json["id"],
         firstName: json["firstName"],
         lastName: json["lastName"],
