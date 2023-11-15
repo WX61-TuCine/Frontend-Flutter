@@ -20,19 +20,17 @@ class userTuCineDataSource extends UserDatasource {
   }
 
   @override
-  Future<dynamic> getUserByEmailAndPassword(String email, String password) async {
+  Future<dynamic> getUserByEmailAndPassword(
+      String email, String password) async {
     try {
-      var user = await dio.post("/users/auth/sign-in",
+      Response user = await dio.post("/users/auth/sign-in",
           data: {"email": email, "password": password});
       return UserResponse.fromJson(user.data);
     } on DioException catch (e) {
       if (e.response != null) {
-        print(e.response?.data);
-        print(e.response?.headers);
-        print(e.response?.requestOptions);
+        print('Error de respuesta de Dio: ${e.response?.data}');
       } else {
-        print(e.requestOptions);
-        print(e.message);
+        print('Error de solicitud de Dio: ${e.requestOptions.path}');
       }
       return null;
     }
@@ -40,19 +38,21 @@ class userTuCineDataSource extends UserDatasource {
 
   @override
   Future<dynamic> createUser(UserPost user) async {
-    try{
-      var userResponse = dio.post("/users/auth/sign-up", data: user.toJson());
+    try {
+      Response response = await dio.post("/users/auth/sign-up", data: user.toJson());
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+
     } on DioException catch (e) {
       if (e.response != null) {
-        print(e.response?.data);
-        print(e.response?.headers);
-        print(e.response?.requestOptions);
+        print('Error de respuesta de Dio: ${e.response?.data}');
       } else {
-        print(e.requestOptions);
-        print(e.message);
+        print('Error de solicitud de Dio: ${e.requestOptions.path}');
       }
       return false;
     }
-    return true;
   }
 }

@@ -22,8 +22,6 @@ class _SignInState extends State<SignIn> {
   final _phoneController = TextEditingController();
   final _dniController = TextEditingController();
   final _birthdayController = TextEditingController();
-  final _genderController = TextEditingController();
-  final _typeUserController = TextEditingController();
   final _passwordController = TextEditingController();
   bool hidePassword = true;
   bool termsValue = false;
@@ -32,19 +30,17 @@ class _SignInState extends State<SignIn> {
   Future<bool> signUpRequest() async {
     final userTuCineDataSource api;
     api = userTuCineDataSource();
-    final userRequest = await api.createUser(
-      UserPost(
-           _firstNameController.text,
-           _lastNameController.text,
-           _emailController.text,
-           _phoneController.text,
-          _dniController.text,
-          _passwordController.text,
-          _birthdayController.text,
-        _gender == 'Masculino' ? 'MALE': 'FEMALE',
-        _typeUser == 'Cinefilo' ? 'USER': 'BUSINESS',
-      )
-    );
+    final userRequest = await api.createUser(UserPost(
+      _firstNameController.text,
+      _lastNameController.text,
+      _emailController.text,
+      _phoneController.text,
+      _dniController.text,
+      _passwordController.text,
+      _birthdayController.text,
+      _gender,
+      _typeUser,
+    ));
     if (userRequest == false) {
       // Scaffold Message
       ScaffoldMessenger.of(context).showSnackBar(
@@ -56,6 +52,7 @@ class _SignInState extends State<SignIn> {
     }
     return true;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -154,7 +151,7 @@ class _SignInState extends State<SignIn> {
                       keyboardType: TextInputType.datetime,
                       decoration: const InputDecoration(
                         labelText: 'Fecha de Nacimiento',
-                        hintText: 'DD/MM/AAAA',
+                        hintText: 'AAAA/MM/DD',
                         border: OutlineInputBorder(),
                       ),
                       onTap: () async {
@@ -169,8 +166,7 @@ class _SignInState extends State<SignIn> {
                         );
 
                         if (date != null) {
-                          _birthdayController.text =
-                              '${date.year}-${date.month}-${date.month}';
+                          _birthdayController.text = transformDate(date);
                         }
                       },
                     ),
@@ -185,37 +181,60 @@ class _SignInState extends State<SignIn> {
                         Row(
                           children: [
                             Expanded(
-                              child: ListTile(
-                                title: const Text(
-                                  'Masculino',
-                                  style: TextStyle(fontSize: 15.0),
-                                ),
-                                leading: Radio<String>(
-                                  value: 'Masculino',
-                                  groupValue: _gender,
-                                  onChanged: (String? value) {
-                                    setState(() {
-                                      _gender = value;
-                                    });
-                                  },
-                                ),
+                              child: Column(
+                                children: [
+                                  Radio<String>(
+                                    value: 'MALE',
+                                    groupValue: _gender,
+                                    onChanged: (String? value) {
+                                      setState(() {
+                                        _gender = value;
+                                      });
+                                    },
+                                  ),
+                                  const Text(
+                                    'FEMALE',
+                                    style: TextStyle(fontSize: 15.0),
+                                  ),
+                                ],
                               ),
                             ),
                             Expanded(
-                              child: ListTile(
-                                title: const Text(
-                                  'Femenino',
-                                  style: TextStyle(fontSize: 15.0),
-                                ),
-                                leading: Radio<String>(
-                                  value: 'Femenino',
-                                  groupValue: _gender,
-                                  onChanged: (String? value) {
-                                    setState(() {
-                                      _gender = value;
-                                    });
-                                  },
-                                ),
+                              child: Column(
+                                children: [
+                                  Radio<String>(
+                                    value: 'Femenino',
+                                    groupValue: _gender,
+                                    onChanged: (String? value) {
+                                      setState(() {
+                                        _gender = value;
+                                      });
+                                    },
+                                  ),
+                                  const Text(
+                                    'Femenino',
+                                    style: TextStyle(fontSize: 15.0),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  Radio<String>(
+                                    value: 'OTHER',
+                                    groupValue: _gender,
+                                    onChanged: (String? value) {
+                                      setState(() {
+                                        _gender = value;
+                                      });
+                                    },
+                                  ),
+                                  const Text(
+                                    'Otro',
+                                    style: TextStyle(fontSize: 15.0),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
@@ -239,7 +258,7 @@ class _SignInState extends State<SignIn> {
                                   style: TextStyle(fontSize: 15.0),
                                 ),
                                 leading: Radio<String>(
-                                  value: 'Cinefilo',
+                                  value: 'CINEPHILE',
                                   groupValue: _typeUser,
                                   onChanged: (String? value) {
                                     setState(() {
@@ -256,7 +275,7 @@ class _SignInState extends State<SignIn> {
                                   style: TextStyle(fontSize: 15.0),
                                 ),
                                 leading: Radio<String>(
-                                  value: 'Cineclub',
+                                  value: 'BUSINESS',
                                   groupValue: _typeUser,
                                   onChanged: (String? value) {
                                     setState(() {
@@ -312,14 +331,13 @@ class _SignInState extends State<SignIn> {
                         minimumSize: const Size(300, 50),
                       ),
                       onPressed: () async {
-                        if(await signUpRequest()){
+                        if (await signUpRequest()) {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => const LoginPage(),
                             ),
                           );
-
                         }
                       },
                       child: const Text('Crear Cuenta',
@@ -371,5 +389,9 @@ class _SignInState extends State<SignIn> {
             ),
           ),
         ));
+  }
+
+  String transformDate(DateTime date) {
+    return '${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
   }
 }
