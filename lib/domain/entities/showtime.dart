@@ -1,11 +1,9 @@
-import 'dart:ffi';
-
 class Showtime{
   final int id;
   final String playDate;
   final String playTime;
   final int capacity;
-  final Float unitPrice;
+  final double unitPrice;
 
   Showtime({
     required this.id,
