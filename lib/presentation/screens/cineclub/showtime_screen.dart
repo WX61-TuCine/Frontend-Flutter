@@ -5,7 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tu_cine/domain/entities/cineclub.dart';
 import 'package:tu_cine/domain/entities/movie.dart';
 import 'package:tu_cine/domain/entities/showtime.dart';
+import 'package:tu_cine/domain/entities/ticket_post.dart';
 import 'package:tu_cine/presentation/providers/booking/booking_quantity_provider.dart';
+import 'package:tu_cine/presentation/providers/booking/ticket_datasource_provider.dart';
+import 'package:tu_cine/presentation/providers/booking/total_price_provider.dart';
 import 'package:tu_cine/presentation/providers/cineclubs/cineclub_info_provider.dart';
 import 'package:tu_cine/presentation/providers/movies/APITuCine/movie_info_provider.dart';
 import 'package:tu_cine/presentation/providers/showtimes/selected_showtime_provider.dart';
@@ -77,11 +80,11 @@ class ShowtimeScreenState extends ConsumerState<ShowtimeScreen> {
                     movieId: movie.id.toString(),
                     cineclubId: cineclub.id.toString()),
                 const SizedBox(height: 10),
-                _BookingQuantity(),
+                const _BookingQuantity(),
                 const SizedBox(height: 10),
-                _TotalPrice(),
+                const _TotalPrice(),
                 const SizedBox(height: 10),
-                _Book(),
+                const _Book(),
               ],
             );
           }, childCount: 1))
@@ -91,15 +94,41 @@ class ShowtimeScreenState extends ConsumerState<ShowtimeScreen> {
   }
 }
 
-class _Book extends StatelessWidget {
-  const _Book({super.key});
+class _Book extends ConsumerStatefulWidget {
+  const _Book();
 
   @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
+  _BookState createState() => _BookState();
 }
 
+class _BookState extends ConsumerState<_Book> {
+  @override
+  Widget build(BuildContext context) {
+    final selectedShowtime = ref.watch(selectedShowtimeProvider);
+    final bookingQuantity = ref.watch(bookingQuantityProvider);
+
+    return Container(
+      padding: const EdgeInsets.all(0),
+      child: FilledButton.tonal(
+        onPressed: () async {
+          final ticket = TicketPost(
+            numberSeats: bookingQuantity,
+            totalPrice: selectedShowtime!.unitPrice * bookingQuantity,
+            userId: 1, // Asigna el userId como 1
+            showtimeId: selectedShowtime.id,
+          );
+
+          final ticketDatasource = ref.read(ticketDatasourceProvider);
+          await ticketDatasource.createTicket(ticket);
+        },
+        child: const Text(
+          'Reservar',
+          style: TextStyle(fontSize: 15, color: Colors.white),
+        ),
+      ),
+    );
+  }
+}
 
 class _TotalPrice extends ConsumerStatefulWidget {
   const _TotalPrice();
@@ -111,14 +140,7 @@ class _TotalPrice extends ConsumerStatefulWidget {
 class _TotalPriceState extends ConsumerState<_TotalPrice> {
   @override
   Widget build(BuildContext context) {
-    final selectedShowtime = ref.watch(selectedShowtimeProvider);
-    final bookingQuantity = ref.watch(bookingQuantityProvider);
-
-    double totalPrice = 0.0;
-
-    if (selectedShowtime != null) {
-      totalPrice = selectedShowtime.unitPrice * bookingQuantity;
-    }
+    final totalPrice = ref.watch(totalPriceProvider);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -137,18 +159,15 @@ class _TotalPriceState extends ConsumerState<_TotalPrice> {
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
-          ),   
+          ),
         ],
       ),
     );
   }
 }
 
-
-
-
 class _BookingQuantity extends ConsumerStatefulWidget {
-  const _BookingQuantity({super.key});
+  const _BookingQuantity();
 
   @override
   _BookingQuantityState createState() => _BookingQuantityState();
@@ -216,7 +235,6 @@ class _BookingQuantityState extends ConsumerState<_BookingQuantity> {
     );
   }
 }
-
 
 class _ShowtimeList extends ConsumerStatefulWidget {
   final String movieId;
@@ -292,7 +310,6 @@ class _ShowtimeListState extends ConsumerState<_ShowtimeList> {
     );
   }
 }
-
 
 class _ShowtimeCard extends StatelessWidget {
   final Showtime showtime;
