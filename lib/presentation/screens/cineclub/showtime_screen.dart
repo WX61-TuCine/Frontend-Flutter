@@ -5,8 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tu_cine/domain/entities/cineclub.dart';
 import 'package:tu_cine/domain/entities/movie.dart';
 import 'package:tu_cine/domain/entities/showtime.dart';
+import 'package:tu_cine/presentation/providers/booking/booking_quantity_provider.dart';
 import 'package:tu_cine/presentation/providers/cineclubs/cineclub_info_provider.dart';
 import 'package:tu_cine/presentation/providers/movies/APITuCine/movie_info_provider.dart';
+import 'package:tu_cine/presentation/providers/showtimes/selected_showtime_provider.dart';
 import 'package:tu_cine/presentation/providers/showtimes/showtime_by_movie_cineclub.dart';
 
 class ShowtimeScreen extends ConsumerStatefulWidget {
@@ -26,8 +28,6 @@ class ShowtimeScreen extends ConsumerStatefulWidget {
 }
 
 class ShowtimeScreenState extends ConsumerState<ShowtimeScreen> {
-
-  Showtime? selectedShowtime;
 
   @override
   void initState() {
@@ -101,16 +101,25 @@ class _Book extends StatelessWidget {
 }
 
 
-class _TotalPrice extends StatefulWidget {
-  const _TotalPrice({super.key});
+class _TotalPrice extends ConsumerStatefulWidget {
+  const _TotalPrice();
 
   @override
-  State<_TotalPrice> createState() => __TotalPriceState();
+  _TotalPriceState createState() => _TotalPriceState();
 }
 
-class __TotalPriceState extends State<_TotalPrice> {
+class _TotalPriceState extends ConsumerState<_TotalPrice> {
   @override
   Widget build(BuildContext context) {
+    final selectedShowtime = ref.watch(selectedShowtimeProvider);
+    final bookingQuantity = ref.watch(bookingQuantityProvider);
+
+    double totalPrice = 0.0;
+
+    if (selectedShowtime != null) {
+      totalPrice = selectedShowtime.unitPrice * bookingQuantity;
+    }
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(
@@ -123,7 +132,7 @@ class __TotalPriceState extends State<_TotalPrice> {
           ),
           const Spacer(),
           Text(
-            'S/ 0.00',
+            'S/ ${totalPrice.toStringAsFixed(2)}',
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -131,40 +140,25 @@ class __TotalPriceState extends State<_TotalPrice> {
           ),   
         ],
       ),
-
     );
   }
 }
 
 
-class _BookingQuantity extends StatefulWidget {
+
+
+class _BookingQuantity extends ConsumerStatefulWidget {
   const _BookingQuantity({super.key});
 
   @override
-  State<_BookingQuantity> createState() => __BookingQuantityState();
+  _BookingQuantityState createState() => _BookingQuantityState();
 }
 
-class __BookingQuantityState extends State<_BookingQuantity> {
-  int numberOfTickets = 1;
-
-  void _incrementTickets() {
-    setState(() {
-      if (numberOfTickets < 10) {
-        numberOfTickets++;
-      }
-    });
-  }
-
-  void _decrementTickets() {
-    setState(() {
-      if (numberOfTickets > 1) {
-        numberOfTickets--;
-      }
-    });
-  }
-
+class _BookingQuantityState extends ConsumerState<_BookingQuantity> {
   @override
   Widget build(BuildContext context) {
+    final numberOfTickets = ref.watch(bookingQuantityProvider.notifier); // Accede al StateNotifier
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
@@ -188,21 +182,25 @@ class __BookingQuantityState extends State<_BookingQuantity> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        numberOfTickets.toString(),
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      Consumer(builder: (context, watch, _) {
+                        final numberOfTicketsValue = ref.watch(bookingQuantityProvider);
+
+                        return Text(
+                          numberOfTicketsValue.toString(),
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        );
+                      }),
                       Row(
                         children: [
                           IconButton(
-                            onPressed: _decrementTickets,
+                            onPressed: () => numberOfTickets.decrementTickets(),
                             icon: const Icon(Icons.remove),
                           ),
                           IconButton(
-                            onPressed: _incrementTickets,
+                            onPressed: () => numberOfTickets.incrementTickets(),
                             icon: const Icon(Icons.add),
                           ),
                         ],
@@ -218,6 +216,7 @@ class __BookingQuantityState extends State<_BookingQuantity> {
     );
   }
 }
+
 
 class _ShowtimeList extends ConsumerStatefulWidget {
   final String movieId;
@@ -263,27 +262,29 @@ class _ShowtimeListState extends ConsumerState<_ShowtimeList> {
             itemBuilder: (context, index) {
               final showtime = showtimes[index];
 
-            return GestureDetector(
-              onTap: () {
-                setState(() {
-                  _selectedIndex = index;
-                });
-              },
-              child: Row(
-                children: [
-                  const SizedBox(width: 10),
-                  _ShowtimeCard(
-                    showtime: showtime,
-                    isSelected: index == _selectedIndex,
-                    onTap: () {
-                      setState(() {
-                        _selectedIndex = index;
-                      });
-                    },
-                  ),
-                ],
-              ),
-            );
+              return GestureDetector(
+                onTap: () {
+                  ref.read(selectedShowtimeProvider.notifier).updateSelectedShowtime(showtime);
+                  setState(() {
+                    _selectedIndex = index;
+                  });
+                },
+                child: Row(
+                  children: [
+                    const SizedBox(width: 10),
+                    _ShowtimeCard(
+                      showtime: showtime,
+                      isSelected: index == _selectedIndex,
+                      onTap: () {
+                        ref.read(selectedShowtimeProvider.notifier).updateSelectedShowtime(showtime);
+                        setState(() {
+                          _selectedIndex = index;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              );
             },
           ),
         ),
@@ -291,6 +292,7 @@ class _ShowtimeListState extends ConsumerState<_ShowtimeList> {
     );
   }
 }
+
 
 class _ShowtimeCard extends StatelessWidget {
   final Showtime showtime;
