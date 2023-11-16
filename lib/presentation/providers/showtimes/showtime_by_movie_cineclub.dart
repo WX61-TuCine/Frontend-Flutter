@@ -24,10 +24,12 @@ class ShowtimesByMovieCineclubNotifier extends StateNotifier<Map<String, List<Sh
   Future<void> loadShowtimes(String movieId, String cineclubId) async {
     if (state[movieId] != null) return; //
 
+    if (state[cineclubId] != null) return; //
+
     //Aqui se hace la llamada a la api
     final List<Showtime> showtimes = await getShowtimes(movieId, cineclubId);
 
     //Aqui se guarda en el estado
-    state = {...state, movieId: showtimes};
+    state = {...state, '$movieId$cineclubId': showtimes};
   }
 }
