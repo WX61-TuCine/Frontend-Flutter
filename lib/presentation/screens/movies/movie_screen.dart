@@ -1,10 +1,11 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tu_cine/domain/entities/movie.dart';
 import 'package:tu_cine/presentation/providers/cineclubs/cineclubs_movie_provider.dart';
 import 'package:tu_cine/presentation/providers/providers.dart';
-import 'package:tu_cine/presentation/widgets/movies/cineclub_horizontal_listview.dart';
+import 'package:tu_cine/presentation/widgets/movies/cineclub_listview_movie.dart';
 
 class MovieScreen extends ConsumerStatefulWidget {
   static const routeName = 'movie_screen';
@@ -21,6 +22,12 @@ class MovieScreen extends ConsumerStatefulWidget {
 }
 
 class MovieScreenState extends ConsumerState<MovieScreen> {
+
+  void navigateToCineclub(String cineclubId) {
+    final goRouter = GoRouter.of(context);
+    goRouter.push('/movie/${widget.movieId}/cineclubs/$cineclubId');
+  }
+
   @override
   void initState() {
     super.initState();
@@ -63,13 +70,14 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
                 
                 _MovieDetails(movie: movie),
 
-                CineclubHorizontalListview(
+                CineclubListviewMovie(
                   cineclubs: cineclubs,
+                  movieId: widget.movieId,
                   name: 'Cineclubs',
-                  subtitle: '.',
                   loadNextPage: () => ref
                       .read(cineclubsByMovieProvider.notifier)
                       .loadCineclubs(widget.movieId),
+                  onTapCineclub: navigateToCineclub,
                 )
                 
               ],

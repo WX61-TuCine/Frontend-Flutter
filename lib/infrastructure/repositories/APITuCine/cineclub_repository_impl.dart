@@ -11,4 +11,9 @@ class CineclubRepositoryImpl extends CineclubsRepository{
   Future<List<Cineclub>> getCineclubs() {
     return dataSource.getCineclubs();
   }
+  
+  @override
+  Future<Cineclub> getCineclubById(String id) {
+    return dataSource.getCineclubById(id);
+  }
 }

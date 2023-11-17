@@ -24,4 +24,16 @@ class CineclubDatasource extends CineclubsDatasource {
 
     return _jsonToCineclubs(response.data);
   }
+  
+  @override
+  Future<Cineclub> getCineclubById(String id) async {
+    final response = await dio.get('/businesses/$id');
+    if (response.statusCode != 200) throw Exception('Error al obtener el cineclub');
+
+    final cineclubDetails = CineclubResponse.fromJson(response.data);
+
+    final Cineclub cineclub = CineclubMapper.cineclubToEntity(cineclubDetails);
+
+    return cineclub;
+  }
 }
