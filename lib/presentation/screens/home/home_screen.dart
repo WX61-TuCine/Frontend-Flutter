@@ -2,20 +2,59 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tu_cine/presentation/providers/movies/APITuCine/movies_providers.dart';
 import 'package:tu_cine/presentation/providers/providers.dart';
+import 'package:tu_cine/presentation/screens/profile/profile_screen.dart';
+import 'package:tu_cine/presentation/screens/search/search_screen.dart';
+import 'package:tu_cine/presentation/screens/tickets/my_tickets_screen.dart';
 import 'package:tu_cine/presentation/widgets/movies/cineclub_horizontal_listview.dart';
-import 'package:tu_cine/presentation/widgets/shared/custom_bottom_navigation.dart';
 import 'package:tu_cine/presentation/widgets/widgets.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   static const String routeName = 'home-screen';
 
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int selectedIndex = 0;
+  @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: _HomeView(),
-      bottomNavigationBar: CustomBottomNavigation(),
+    final screens = [_HomeView(), SearchScreen(), MyTicketsScreen(), ProfileScreen()];
+
+    return Scaffold(
+      body: IndexedStack(
+      index: selectedIndex,
+      children: screens,
+    ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: selectedIndex,
+        onTap: (value){
+          setState(() {
+            selectedIndex = value;
+          });
+        },
+        elevation: 0,
+        items: const [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home_filled),
+              activeIcon: Icon(Icons.home_filled),
+              label: 'Explorar'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              activeIcon: Icon(Icons.search_outlined),
+              label: 'Buscar'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.airplane_ticket),
+              activeIcon: Icon(Icons.airplane_ticket_outlined),
+              label: 'Ticket'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              activeIcon: Icon(Icons.person_outlined),
+              label: 'Perfil'),
+        ],
+      ),
       );
   }
 }
