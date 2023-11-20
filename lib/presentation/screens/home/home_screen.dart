@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
-    final screens = [_HomeView(), SearchScreen(), MyTicketsScreen(), ProfileScreen()];
+    final screens = [_HomeView(), FavoriteScreen(), MyTicketsScreen(), ProfileScreen()];
 
     return Scaffold(
       body: IndexedStack(
@@ -43,8 +43,8 @@ class _HomeScreenState extends State<HomeScreen> {
               label: 'Explorar'),
           BottomNavigationBarItem(
               icon: Icon(Icons.search),
-              activeIcon: Icon(Icons.search_outlined),
-              label: 'Buscar'),
+              activeIcon: Icon(Icons.favorite),
+              label: 'Favoritos'),
           BottomNavigationBarItem(
               icon: Icon(Icons.airplane_ticket),
               activeIcon: Icon(Icons.airplane_ticket_outlined),
