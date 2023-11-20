@@ -2,10 +2,14 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:tu_cine/domain/entities/movie.dart';
 import 'package:tu_cine/presentation/providers/cineclubs/cineclubs_movie_provider.dart';
 import 'package:tu_cine/presentation/providers/providers.dart';
 import 'package:tu_cine/presentation/widgets/movies/cineclub_listview_movie.dart';
+import 'package:drift/drift.dart' as drift;
+
+import '../../../database/moviesDatabase.dart';
 
 class MovieScreen extends ConsumerStatefulWidget {
   static const routeName = 'movie_screen';
@@ -22,6 +26,7 @@ class MovieScreen extends ConsumerStatefulWidget {
 }
 
 class MovieScreenState extends ConsumerState<MovieScreen> {
+  late bool _isFavorite = false;
 
   void navigateToCineclub(String cineclubId) {
     final goRouter = GoRouter.of(context);
@@ -36,6 +41,17 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
     ref.read(movieInfoProvider.notifier).loadMovie(widget.movieId);
     ref.read(actorsByMovieProvider.notifier).loadActors(widget.movieId);
     ref.read(cineclubsByMovieProvider.notifier).loadCineclubs(widget.movieId);
+
+  }
+
+  verifyFavorite(String movieName) async {
+    final database = AppDatabase();
+    final favoriteMovie = await database.getFavoriteMovieByName(movieName);
+    if (favoriteMovie != null) {
+      setState(() {
+        _isFavorite = true;
+      });
+    }
   }
 
   @override
@@ -44,6 +60,8 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
     final Movie? movie = ref.watch(movieInfoProvider)[widget.movieId];
 
     final cineclubs = ref.watch(cineclubsByMovieProvider)[widget.movieId];
+
+    verifyFavorite(movie!.title);
     // Then in your return statement:
     if (cineclubs == null) {
       return const Center(child: CircularProgressIndicator());
@@ -85,6 +103,40 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
           }, childCount: 1))
         ],
       ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            _isFavorite = !_isFavorite;
+            if (_isFavorite) {
+              // Obtén una referencia a la base de datos
+              final database = AppDatabase();
+
+              // Crea una instancia de FavoriteMovie
+              final favoriteMovie = FavoriteMoviesCompanion(
+                id: drift.Value(movie.id),
+                title: drift.Value(movie.title),
+                year: drift.Value(movie.year),
+                synopsis: drift.Value(movie.synopsis),
+                genreIds: drift.Value(movie.genreIds.join(',')),
+                trailerSrc: drift.Value(movie.trailerSrc),
+                duration: drift.Value(movie.duration),
+                posterSrc: drift.Value(movie.posterSrc),
+              );
+
+              // Inserta la película en la base de datos
+              await database.insertFavoriteMovie(favoriteMovie);
+            } else {
+              // Si el botón se desactiva, puedes eliminar la película de la base de datos
+              final database = AppDatabase();
+              await database.deleteFavoriteMovie(FavoriteMoviesCompanion(id: drift.Value(movie.id)));
+            }
+
+            setState(() {});
+          },
+          child: Icon(
+            _isFavorite ? Icons.favorite : Icons.favorite_border,
+            color: Colors.white,
+          ),
+        )
     );
   }
 }
