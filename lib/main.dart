@@ -5,10 +5,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:tu_cine/config/theme/app_theme.dart';
-//import 'package:tu_cine/presentation/widgets/shared/custom_bottom_navigation.dart';
 
 import 'config/router/app_router.dart';
-//import 'package:tu_cine/presentation/widgets/shared/custom_bottom_navigation.dart';
 
 Future<void> main() async {
 
