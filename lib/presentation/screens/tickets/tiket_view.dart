@@ -54,9 +54,9 @@ class TiketView extends StatelessWidget {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15)
                             ),
-                            child: Image.network(data.img, fit: BoxFit.cover,)
+                            child: Image.network('https://images.pexels.com/photos/19110740/pexels-photo-19110740/free-photo-of-ciudad-puesta-de-sol-moda-hombre.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', fit: BoxFit.cover,)
                           ),
-                          Text(data.name,
+                          Text(data.user.firstName,
                             style: TextStyle(
                               fontSize: 20,
                               color: Colors.black87,
