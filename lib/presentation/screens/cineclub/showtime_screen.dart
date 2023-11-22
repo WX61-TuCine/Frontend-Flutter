@@ -558,7 +558,6 @@ class ShowtimeAppBar extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  //Image.asset('assets/logo.png' , width: 30, height: 30),
                   const SizedBox(width: 0),
                   Text(
                     'Escoge un horario',
