@@ -23,7 +23,9 @@ class _MyTicketsScreenState extends State<MyTicketsScreen> {
 
   String provisionalUrl = "https://backend-production-733a.up.railway.app/api/TuCine/v1/tickets";
   List<Ticket> allTickets = [];
-  List lAvailableFilms = [];
+  List<AvailableFilm> allAvFilms = [];
+  List<Showtime> allShowtimes = [];
+
 
   Future<String> makeRequest() async{
     var responseT = await http.get(Uri.parse(provisionalUrl),
@@ -33,17 +35,53 @@ class _MyTicketsScreenState extends State<MyTicketsScreen> {
       var extractData = json.decode(responseT.body);
       allTickets = List<Ticket>.from(extractData.map((dynamic item)=> Ticket.fromJson(item)));
     });
-
-    //print(responseT.body);
-
     return responseT.body;
+  }
 
+  Future<String> makeRequestShowTimes() async{
+    var responseS = await http.get(Uri.parse('https://backend-production-733a.up.railway.app/api/TuCine/v1/showtimes'),
+        headers: {'Accept': 'application/json'});
+
+    setState(() {
+      var extractDataS = json.decode(responseS.body);
+      allShowtimes = List<Showtime>.from(extractDataS.map((dynamic item)=> Showtime.fromJson(item)));
+    });
+    return responseS.body;
+  }
+
+  Future<String> makeRequestAvailableFilms() async{
+    var responseA = await http.get(Uri.parse("https://backend-production-733a.up.railway.app/api/TuCine/v1/availableFilms"),
+        headers: {'Accept': 'application/json'});
+
+    setState(() {
+      var extractData = json.decode(responseA.body);
+      allAvFilms = List<AvailableFilm>.from(extractData.map((dynamic item)=> AvailableFilm.fromJson(item)));
+    });
+    return responseA.body;
+  }
+
+  AvailableFilm getAvFilmById(int id) {
+    AvailableFilm thisAvFilm = allAvFilms
+        .firstWhere((avFilm) => avFilm.id == id);
+
+    return thisAvFilm;
+  }
+  Showtime getShowtimeById(int id) {
+    Showtime thisShowtime = allShowtimes
+        .firstWhere((element) => element.id == id);
+    return thisShowtime;
   }
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    this.makeRequest();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    await makeRequest();
+    await makeRequestAvailableFilms();
+    await makeRequestShowTimes();
   }
 
   @override
@@ -105,15 +143,16 @@ class _MyTicketsScreenState extends State<MyTicketsScreen> {
                         children: [
                           ListTile(
                             contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                            title: Text(
-                              (allTickets[i].user.firstName),
-                              style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
+                            title: (allAvFilms.isNotEmpty && allShowtimes.isNotEmpty) ?
+                            Text(
+                                (getAvFilmById(getShowtimeById(movieTicket.showtimeId).availableFilmId)).film.title,
+                              style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)): Text("Cargado..."),
                             subtitle: Text(movieTicket.state, style: const TextStyle(color: Colors.black12, fontWeight: FontWeight.bold),),
                             trailing: ClipRRect(
                                 borderRadius: BorderRadius.circular(5),
                                 child: SizedBox.fromSize(
-                                  size: Size.fromRadius(30),
-                                  child: Image.network('https://images.pexels.com/photos/19110740/pexels-photo-19110740/free-photo-of-ciudad-puesta-de-sol-moda-hombre.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', fit: BoxFit.cover,),
+                                  size: const Size.fromRadius(30),
+                                    child: (allAvFilms.isNotEmpty && allShowtimes.isNotEmpty) ? Image.network((getAvFilmById(getShowtimeById(movieTicket.showtimeId).availableFilmId)).film.posterSrc, fit: BoxFit.cover) : Container(),
                                 )
                             ),
                             onTap: (){
@@ -127,25 +166,25 @@ class _MyTicketsScreenState extends State<MyTicketsScreen> {
                             children: [
                               Row(
                                 children: [
-                                  Icon(Icons.location_on_outlined,
+                                  const Icon(Icons.location_on_outlined,
                                     color: Colors.black54,
                                   ),
-                                  SizedBox(width: 5,),
+                                  const SizedBox(width: 5),
                                   Text(
                                     (movieTicket.dateEmition).toString(),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: Colors.black54),
                                   ),
                                 ],
                               ),
                               Row(
                                 children: [
-                                  SizedBox(width: 5),
+                                  const SizedBox(width: 5),
                                   Text(
-                                    (movieTicket.showtime.unitPrice).toString(),
-                                    style: TextStyle(
-                                        color: Colors.black54
-                                    ),)
+                                    (movieTicket.showtimeId).toString(),
+                                    style: const TextStyle(
+                                        color: Colors.black54)
+                                  )
                                 ],
                               )
                             ],

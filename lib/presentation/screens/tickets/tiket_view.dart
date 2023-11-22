@@ -57,7 +57,7 @@ class TiketView extends StatelessWidget {
                             child: Image.network('https://images.pexels.com/photos/19110740/pexels-photo-19110740/free-photo-of-ciudad-puesta-de-sol-moda-hombre.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', fit: BoxFit.cover,)
                           ),
                           Text(data.user.firstName,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 20,
                               color: Colors.black87,
                               fontWeight: FontWeight.w700,
@@ -65,7 +65,7 @@ class TiketView extends StatelessWidget {
                             ),
                           ),
                           const Text('Mostrar este ticket en la entrada.', style: TextStyle(fontSize: 14, color: Colors.black54,)),
-                          Padding(
+                          const Padding(
                               padding: EdgeInsets.symmetric(horizontal: 15),
                           child: Divider(
                             thickness: 1,
@@ -75,8 +75,8 @@ class TiketView extends StatelessWidget {
                           ,
                           ListTile(
                             contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                            title: Text("Cineclub", style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 12),),
-                            subtitle: Text("Autocine Limapark", style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 14),),
+                            title: const Text("Cineclub", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 12),),
+                            subtitle: const Text("Autocine Limapark", style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 14),),
                             trailing: ClipRRect(
                                 borderRadius: BorderRadius.circular(5),
                                 child: SizedBox.fromSize(
