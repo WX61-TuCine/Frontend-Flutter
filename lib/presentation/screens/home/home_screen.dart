@@ -38,20 +38,20 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
         items: const [
           BottomNavigationBarItem(
-              icon: Icon(Icons.home_filled),
+              icon: Icon(Icons.home_outlined),
               activeIcon: Icon(Icons.home_filled),
               label: 'Explorar'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.search),
+              icon: Icon(Icons.favorite_border_outlined),
               activeIcon: Icon(Icons.favorite),
               label: 'Favoritos'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.airplane_ticket),
-              activeIcon: Icon(Icons.airplane_ticket_outlined),
+              icon: Icon(Icons.airplane_ticket_outlined),
+              activeIcon: Icon(Icons.airplane_ticket),
               label: 'Ticket'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              activeIcon: Icon(Icons.person_outlined),
+              icon: Icon(Icons.person_outlined),
+              activeIcon: Icon(Icons.person),
               label: 'Perfil'),
         ],
       ),
