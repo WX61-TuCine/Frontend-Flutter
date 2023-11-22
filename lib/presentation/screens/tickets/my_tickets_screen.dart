@@ -8,6 +8,7 @@ class MyTicketsScreen extends StatefulWidget {
   static const routeName = 'my_tickets_screen';
   const MyTicketsScreen({super.key});
 
+  
   @override
   State<MyTicketsScreen> createState() => _MyTicketsScreenState();
 }
@@ -26,6 +27,7 @@ class _MyTicketsScreenState extends State<MyTicketsScreen> {
   List<AvailableFilm> allAvFilms = [];
   List<Showtime> allShowtimes = [];
 
+  
 
   Future<String> makeRequest() async{
     var responseT = await http.get(Uri.parse(provisionalUrl),
@@ -60,6 +62,7 @@ class _MyTicketsScreenState extends State<MyTicketsScreen> {
     return responseA.body;
   }
 
+  
   AvailableFilm getAvFilmById(int id) {
     AvailableFilm thisAvFilm = allAvFilms
         .firstWhere((avFilm) => avFilm.id == id);
@@ -84,6 +87,7 @@ class _MyTicketsScreenState extends State<MyTicketsScreen> {
     await makeRequestShowTimes();
   }
 
+  
   @override
   Widget build(BuildContext context) {
     final filterMovies = allTickets.where((movieTicket){
@@ -178,6 +182,7 @@ class _MyTicketsScreenState extends State<MyTicketsScreen> {
                                 ],
                               ),
                               Row(
+                                
                                 children: [
                                   const SizedBox(width: 5),
                                   Text(
