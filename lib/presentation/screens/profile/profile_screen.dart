@@ -8,7 +8,10 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+ 
+  // construir la interfaz de usuario
   @override
+  
   Widget build(BuildContext context) {
     return const Center(
       child: Text('Profile Screen'),

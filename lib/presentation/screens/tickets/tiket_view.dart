@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ticket_widget/ticket_widget.dart';
 
+
 class TiketView extends StatelessWidget {
 
   TiketView(this.data);
@@ -34,6 +35,8 @@ class TiketView extends StatelessWidget {
               fontWeight: FontWeight.w200,
             ),
           ),
+
+          //Muestra la información del ticket
           TicketWidget(
             color: Colors.amberAccent,
               width: 300,

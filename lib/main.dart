@@ -29,7 +29,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       
       theme: AppTheme().getTheme(),
-      //home: const CustomBottomNavigation(),
     );
   }
 }
