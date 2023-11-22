@@ -61,7 +61,7 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
 
     final cineclubs = ref.watch(cineclubsByMovieProvider)[widget.movieId];
 
-    verifyFavorite(movie!.title);
+    //verifyFavorite(movie!.title);
     // Then in your return statement:
     if (cineclubs == null) {
       return const Center(child: CircularProgressIndicator());

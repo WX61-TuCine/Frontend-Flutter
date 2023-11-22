@@ -139,13 +139,6 @@ class _Slide extends StatelessWidget {
           ),
 
           //Location
-          const Row(
-            children: [
-              Icon(Icons.location_pin, color: Colors.black),
-              SizedBox(width: 3),
-              Text('Locacion', style: TextStyle(fontSize: 10, color: Colors.black)),
-            ],
-          )
 
         ])
         

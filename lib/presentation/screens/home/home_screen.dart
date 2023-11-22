@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tu_cine/presentation/providers/movies/APIMovieDB/movies_providers.dart';
 import 'package:tu_cine/presentation/providers/movies/APITuCine/movies_providers.dart';
 import 'package:tu_cine/presentation/providers/providers.dart';
 import 'package:tu_cine/presentation/screens/profile/profile_screen.dart';
@@ -74,9 +75,9 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     //Providers
 /*     ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
     ref.read(popularMoviesProvider.notifier).loadNextPage();
-    ref.read(upcomingMoviesProvider.notifier).loadNextPage();
+    
     ref.read(topRatedMoviesProvider.notifier).loadNextPage(); */
-
+    ref.read(upcomingMoviesProvider.notifier).loadNextPage();
     ref.read(cineclubsProvider.notifier).getCineclubs();
     ref.read(moviesProvider.notifier).getNowPlayingMovies();
   }
@@ -86,7 +87,7 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     //final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
     final slideShowMovies = ref.watch(moviesSlideshowProvider);
     //final popularMovies = ref.watch(popularMoviesProvider);
-    //final upcomingMovies = ref.watch(upcomingMoviesProvider);
+    final upcomingMovies = ref.watch(upcomingMoviesProvider);
 
   
     final cineclubs = ref.watch(cineclubsProvider);
@@ -125,14 +126,14 @@ class _HomeViewState extends ConsumerState<_HomeView> {
                   
                   ),
 
-/*                 MoviesHorizontalListview(
+                 MoviesHorizontalListview(
                   movies: upcomingMovies,
                   title: 'Próximamente',
                   subtitle: 'Ver más',
                   loadNextPage: () => ref
                       .read(upcomingMoviesProvider.notifier)
                       .loadNextPage(), //Scroll infinitamente
-                ),   */              
+                ),             
 
                 const SizedBox(height: 10),
               ],
